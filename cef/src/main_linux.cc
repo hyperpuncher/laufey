@@ -668,8 +668,8 @@ class LaufeyCombinedApp : public CefApp, public CefBrowserProcessHandler {
     // switch; CEF propagates resolved features to its subprocesses. Skip if the
     // embedder already set enable-features so we don't clobber their list.
     if (process_type.empty() && !command_line->HasSwitch("enable-features")) {
-      command_line->AppendSwitchWithValue("enable-features",
-                                          "OverlayScrollbar");
+      command_line->AppendSwitchWithValue(
+          "enable-features", "MiddleClickAutoscroll,OverlayScrollbar");
     }
 
     // Silence Chromium's background networking. The GCM (Google Cloud
