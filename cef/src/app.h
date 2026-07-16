@@ -211,6 +211,15 @@ class LaufeyApp : public CefApp, public CefBrowserProcessHandler {
       CefRefPtr<CefCommandLine> command_line) override {
     command_line->AppendSwitch("use-mock-keychain");
 
+    // Match pi-ui's Chromium behavior across installed launches. CEF is
+    // initialized before the Deno runtime starts, so these defaults must be
+    // configured by the native backend rather than main.ts. Respect explicit
+    // command-line feature overrides.
+    if (process_type.empty() && !command_line->HasSwitch("enable-features")) {
+      command_line->AppendSwitchWithValue(
+          "enable-features", "MiddleClickAutoscroll,OverlayScrollbar");
+    }
+
     // Silence Chromium's background networking. The GCM (Google Cloud
     // Messaging) client tries to register on startup and logs noisy
     // `registration_request.cc ... PHONE_REGISTRATION_ERROR` /
